@@ -3,6 +3,7 @@ export const theme = {
   colors: {
     background: '#0A0A0A',
     modalBackground: '#1F1F1F', 
+    selectorBackground: '#333333',
     primary: '#00FF88',
     secondary: '#7C3AED',
     text: '#FFFFFF',

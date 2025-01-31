@@ -158,12 +158,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   picker: {
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.selectorBackground,
     borderRadius: theme.radii.m,
     marginBottom: theme.spacing.m,
     borderWidth: 1,
     color: theme.colors.text,
     borderColor: theme.colors.border,
+    paddingVertical: '0.5rem',
+    paddingHorizontal: '1rem',
   },
   pickerItem: {
     color: theme.colors.text,
