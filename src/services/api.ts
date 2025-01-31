@@ -4,6 +4,11 @@ export interface Task {
   id: number;
   title: string;
   completed: boolean;
+  priority?: string;
+  type?: string;
+  dueDate?: string;
+  details?: string;
+  relatedTasks?: number[];
 }
 
 export const fetchInitialTasks = async (): Promise<Task[]> => {
@@ -13,7 +18,9 @@ export const fetchInitialTasks = async (): Promise<Task[]> => {
     return data.map((task: any) => ({
       id: task.id,
       title: task.title,
-      completed: task.completed
+      completed: task.completed,
+      priority: 'no-urgency', // Valor padrão
+      type: 'others'
     }));
   } catch (error) {
     console.error("Erro ao buscar tarefas:", error);

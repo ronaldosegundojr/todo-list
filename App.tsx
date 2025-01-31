@@ -5,6 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { StatusBar } from "react-native";
 import HomeScreen from "./src/screens/HomeScreen";
 import { theme } from "./src/theme";
+import 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 

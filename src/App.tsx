@@ -1,9 +1,10 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { StatusBar } from 'react-native';
-import HomeScreen from './src/screens/HomeScreen';
-import { theme } from './src/theme';
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { StatusBar } from "react-native";
+import HomeScreen from "./src/screens/HomeScreen";
+import { theme } from "./src/theme";
+import 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 
@@ -18,14 +19,14 @@ const App = () => {
           },
           headerTintColor: theme.colors.text,
           headerTitleStyle: {
-            fontWeight: 'bold',
+            fontWeight: "bold",
           },
         }}
       >
-        <Stack.Screen 
-          name="Home" 
+        <Stack.Screen
+          name="Home"
           component={HomeScreen}
-          options={{ title: 'Cyber Tasks' }}
+          options={{ title: "Cyber Tasks" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

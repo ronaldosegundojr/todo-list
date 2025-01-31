@@ -2,6 +2,7 @@
 export const theme = {
   colors: {
     background: '#0A0A0A',
+    modalBackground: '#1F1F1F', 
     primary: '#00FF88',
     secondary: '#7C3AED',
     text: '#FFFFFF',
@@ -9,6 +10,10 @@ export const theme = {
     border: '#2D2D2D',
     danger: '#FF4654',
     completedText: '#808080',
+    urgent: '#FF0000',
+    important: '#FFA500',
+    remember: '#FFFF00',
+    'no-urgency': '#00FF88',
   },
   spacing: {
     s: 8,

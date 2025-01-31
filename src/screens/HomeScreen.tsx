@@ -1,9 +1,7 @@
-// src/screens/HomeScreen.tsx
 import React, { useState, useEffect } from "react";
 import {
   View,
   TextInput,
-  FlatList,
   StyleSheet,
   TouchableOpacity,
   Text,
@@ -13,16 +11,27 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import TaskItem from "../components/TaskItem";
 import { fetchInitialTasks } from "../services/api";
 import { theme } from "../theme";
+import DraggableFlatList from 'react-native-draggable-flatlist';
+import TaskDetailsModal from "../components/TaskDetailsModal";
 
-interface Task {
+export interface Task {
   id: number;
   title: string;
   completed: boolean;
+  selected?: boolean;
+  priority?: string;
+  type?: string;
+  dueDate?: string;
+  details?: string;
+  relatedTasks?: number[];
 }
 
 const HomeScreen = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [taskInput, setTaskInput] = useState("");
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [filter, setFilter] = useState<string | null>(null);
 
   useEffect(() => {
     const initializeTasks = async () => {
@@ -70,11 +79,30 @@ const HomeScreen = () => {
     );
   };
 
+  const filteredTasks = () => {
+    if (!filter) return tasks;
+    return tasks.filter(task => task[filter as keyof Task]);
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <View style={styles.header}>
         <Text style={styles.title}>Cyber Tasks</Text>
+        <View style={styles.filterContainer}>
+          <TouchableOpacity 
+            style={[styles.filterButton, filter === 'priority' && styles.activeFilter]} 
+            onPress={() => setFilter(filter === 'priority' ? null : 'priority')}
+          >
+            <Text style={styles.filterText}>Prioridade</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.filterButton, filter === 'type' && styles.activeFilter]} 
+            onPress={() => setFilter(filter === 'type' ? null : 'type')}
+          >
+            <Text style={styles.filterText}>Tipo</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.inputContainer}>
@@ -91,17 +119,34 @@ const HomeScreen = () => {
         </TouchableOpacity>
       </View>
 
-      <FlatList
-        data={tasks}
-        renderItem={({ item }) => (
+      <DraggableFlatList
+        data={filteredTasks()}
+        renderItem={({ item, drag }) => (
           <TaskItem
             task={item}
             onToggle={() => toggleTask(item.id)}
             onDelete={() => removeTask(item.id)}
+            onLongPress={drag}
+            onPressDetails={() => {
+              setSelectedTask(item);
+              setModalVisible(true);
+            }}
           />
         )}
         keyExtractor={(item) => item.id.toString()}
+        onDragEnd={({ data }) => setTasks(data)}
         contentContainerStyle={styles.listContent}
+      />
+
+      <TaskDetailsModal
+        visible={modalVisible}
+        task={selectedTask || { id: 0, title: '', completed: false }}
+        onSave={(updatedTask) => {
+          setTasks(tasks.map(t => t.id === updatedTask.id ? updatedTask : t));
+          setModalVisible(false);
+        }}
+        onClose={() => setModalVisible(false)}
+        allTasks={tasks}
       />
     </View>
   );
@@ -151,6 +196,25 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingBottom: theme.spacing.l,
+  },
+  filterContainer: {
+    flexDirection: 'row',
+    gap: theme.spacing.s,
+    marginTop: theme.spacing.m,
+  },
+  filterButton: {
+    padding: theme.spacing.s,
+    borderRadius: theme.radii.m,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+  },
+  activeFilter: {
+    backgroundColor: theme.colors.primary,
+    borderColor: theme.colors.primary,
+  },
+  filterText: {
+    color: theme.colors.text,
+    fontSize: 12,
   },
 });
 
