@@ -129,7 +129,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.7)',
     justifyContent: 'center',
-    padding: theme.spacing.m,
+    //padding: theme.spacing.m,
+    paddingVertical: '2rem',
+    paddingHorizontal: '50rem',
   },
   modalContent: {
     backgroundColor: theme.colors.inputBackground,
