@@ -156,9 +156,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
-    //padding: theme.spacing.m,
-    paddingVertical: '2rem',
-    paddingHorizontal: '50rem',
+    width: '100%',
+    padding: theme.spacing.l,
   },
   header: {
     marginBottom: theme.spacing.l,
