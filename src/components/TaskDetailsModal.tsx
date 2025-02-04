@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal } from 'react-native';
-import { Picker } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { theme } from '../theme';
+import { Picker } from '@react-native-picker/picker';
 
 interface TaskDetailsModalProps {
   visible: boolean;
@@ -129,9 +129,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.7)',
     justifyContent: 'center',
+    alignItems: 'center',
     //padding: theme.spacing.m,
-    paddingVertical: '2rem',
-    paddingHorizontal: '50rem',
+    width: '100%',
   },
   modalContent: {
     backgroundColor: theme.colors.inputBackground,
@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
     padding: theme.spacing.l,
     borderWidth: 1,
     borderColor: theme.colors.border,
+    width: '80%',
   },
   modalTitle: {
     color: theme.colors.primary,
@@ -164,8 +165,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     color: theme.colors.text,
     borderColor: theme.colors.border,
-    paddingVertical: '0.5rem',
-    paddingHorizontal: '1rem',
   },
   pickerItem: {
     color: theme.colors.text,
