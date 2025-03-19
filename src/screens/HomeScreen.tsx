@@ -11,7 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import TaskItem from "../components/TaskItem";
 import { fetchInitialTasks } from "../services/api";
 import { theme } from "../theme";
-import DraggableFlatList from 'react-native-draggable-flatlist';
+import DraggableFlatList from "react-native-draggable-flatlist";
 import TaskDetailsModal from "../components/TaskDetailsModal";
 
 export interface Task {
@@ -19,7 +19,21 @@ export interface Task {
   title: string;
   completed: boolean;
   selected?: boolean;
-  priority?: string;
+  priority?:
+    | "text"
+    | "background"
+    | "modalBackground"
+    | "selectorBackground"
+    | "primary"
+    | "secondary"
+    | "inputBackground"
+    | "border"
+    | "danger"
+    | "completedText"
+    | "urgent"
+    | "important"
+    | "remember"
+    | "no-urgency";
   type?: string;
   dueDate?: string;
   details?: string;
@@ -81,7 +95,7 @@ const HomeScreen = () => {
 
   const filteredTasks = () => {
     if (!filter) return tasks;
-    return tasks.filter(task => task[filter as keyof Task]);
+    return tasks.filter((task) => task[filter as keyof Task]);
   };
 
   return (
@@ -90,15 +104,21 @@ const HomeScreen = () => {
       <View style={styles.header}>
         <Text style={styles.title}>Cyber Tasks</Text>
         <View style={styles.filterContainer}>
-          <TouchableOpacity 
-            style={[styles.filterButton, filter === 'priority' && styles.activeFilter]} 
-            onPress={() => setFilter(filter === 'priority' ? null : 'priority')}
+          <TouchableOpacity
+            style={[
+              styles.filterButton,
+              filter === "priority" && styles.activeFilter,
+            ]}
+            onPress={() => setFilter(filter === "priority" ? null : "priority")}
           >
             <Text style={styles.filterText}>Prioridade</Text>
           </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.filterButton, filter === 'type' && styles.activeFilter]} 
-            onPress={() => setFilter(filter === 'type' ? null : 'type')}
+          <TouchableOpacity
+            style={[
+              styles.filterButton,
+              filter === "type" && styles.activeFilter,
+            ]}
+            onPress={() => setFilter(filter === "type" ? null : "type")}
           >
             <Text style={styles.filterText}>Tipo</Text>
           </TouchableOpacity>
@@ -140,9 +160,19 @@ const HomeScreen = () => {
 
       <TaskDetailsModal
         visible={modalVisible}
-        task={selectedTask || { id: 0, title: '', completed: false }}
+        task={
+          selectedTask || {
+            id: 0,
+            title: "",
+            completed: false,
+            priority: "no-urgency",
+            type: "others",
+          }
+        }
         onSave={(updatedTask) => {
-          setTasks(tasks.map(t => t.id === updatedTask.id ? updatedTask : t));
+          setTasks(
+            tasks.map((t) => (t.id === updatedTask.id ? updatedTask : t))
+          );
           setModalVisible(false);
         }}
         onClose={() => setModalVisible(false)}
@@ -157,8 +187,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.background,
     //padding: theme.spacing.m,
-    paddingVertical: '2rem',
-    paddingHorizontal: '50rem',
+    paddingVertical: 32,
+    paddingHorizontal: 50,
   },
   header: {
     marginBottom: theme.spacing.l,
@@ -200,7 +230,7 @@ const styles = StyleSheet.create({
     paddingBottom: theme.spacing.l,
   },
   filterContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: theme.spacing.s,
     marginTop: theme.spacing.m,
   },

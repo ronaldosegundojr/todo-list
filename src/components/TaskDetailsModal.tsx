@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+// src/components/TaskDetailsModal.tsx
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal } from 'react-native';
-import { Picker } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { theme } from '../theme';
+import { Task } from '../types/types';
 
 interface TaskDetailsModalProps {
   visible: boolean;
-  task: any;
-  onSave: (updatedTask: any) => void;
+  task: Task;
+  onSave: (updatedTask: Task) => void;
   onClose: () => void;
-  allTasks: any[];
+  allTasks: Task[];
 }
 
 const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({ 
@@ -19,8 +21,13 @@ const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
   onClose,
   allTasks
 }) => {
-  const [formData, setFormData] = useState(task);
+  const [formData, setFormData] = useState<Task>(task);
   const [showDatePicker, setShowDatePicker] = useState(false);
+
+  // Atualiza o formData sempre que a prop task mudar
+  useEffect(() => {
+    setFormData(task);
+  }, [task]);
 
   return (
     <Modal
@@ -38,17 +45,17 @@ const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
             placeholder="Título"
             placeholderTextColor={theme.colors.completedText}
             value={formData.title}
-            onChangeText={(text) => setFormData({...formData, title: text})}
+            onChangeText={(text) => setFormData({ ...formData, title: text })}
           />
 
           <Picker
             selectedValue={formData.priority}
-            onValueChange={(value) => setFormData({...formData, priority: value})}
+            onValueChange={(value) => setFormData({ ...formData, priority: value })}
             style={styles.picker}
             dropdownIconColor={theme.colors.text}
             itemStyle={styles.pickerItem}
           >
-            <Picker.Item label="Selecione Prioridade" value={"null"} />
+            <Picker.Item label="Selecione Prioridade" value={null} />
             <Picker.Item label="Urgente" value="urgent" />
             <Picker.Item label="Importante" value="important" />
             <Picker.Item label="Lembrar" value="remember" />
@@ -73,14 +80,14 @@ const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
               display="default"
               onChange={(event, date) => {
                 setShowDatePicker(false);
-                date && setFormData({...formData, dueDate: date.toISOString()});
+                date && setFormData({ ...formData, dueDate: date.toISOString() });
               }}
             />
           )}
 
           <Picker
             selectedValue={formData.type}
-            onValueChange={(value) => setFormData({...formData, type: value})}
+            onValueChange={(value) => setFormData({ ...formData, type: value })}
             style={styles.picker}
             dropdownIconColor={theme.colors.text}
             itemStyle={styles.pickerItem}
@@ -100,7 +107,7 @@ const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
             placeholderTextColor={theme.colors.completedText}
             multiline
             value={formData.details}
-            onChangeText={(text) => setFormData({...formData, details: text})}
+            onChangeText={(text) => setFormData({ ...formData, details: text })}
           />
 
           <View style={styles.buttonRow}>
@@ -124,14 +131,16 @@ const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
   );
 };
 
+// Resto do código (styles)...
+
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.7)',
     justifyContent: 'center',
     //padding: theme.spacing.m,
-    paddingVertical: '2rem',
-    paddingHorizontal: '50rem',
+    paddingVertical: 32, // assuming 1rem = 16px
+    paddingHorizontal: 50,
   },
   modalContent: {
     backgroundColor: theme.colors.inputBackground,
@@ -164,8 +173,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     color: theme.colors.text,
     borderColor: theme.colors.border,
-    paddingVertical: '0.5rem',
-    paddingHorizontal: '1rem',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
   },
   pickerItem: {
     color: theme.colors.text,

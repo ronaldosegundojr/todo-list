@@ -4,7 +4,7 @@ export interface Task {
   id: number;
   title: string;
   completed: boolean;
-  priority?: string;
+  priority?:  "text" | "background" | "modalBackground" | "selectorBackground" | "primary" | "secondary" | "inputBackground" | "border" | "danger" | "completedText" | "urgent" | "important" | "remember" | "no-urgency";
   type?: string;
   dueDate?: string;
   details?: string;
